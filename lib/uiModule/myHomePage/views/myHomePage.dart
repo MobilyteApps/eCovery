@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 // ignore: must_be_immutable
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -20,9 +20,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final MyHomePageController ctrl = Get.put(MyHomePageController());
 
-  // Duration duration = const Duration();
-  // Timer? timer;
-
+  /// Start Timer
   // ignore: non_constant_identifier_names
   void StartTimer(int index) {
     ctrl.taskList[index].timer =
@@ -37,25 +35,20 @@ class _MyHomePageState extends State<MyHomePage> {
       final seconds = ctrl.taskList[index].duration.inSeconds + addSecond;
       ctrl.taskList[index].duration = Duration(seconds: seconds);
     });
-
-    // ctrl.seconds.value = ctrl.duration.value.inSeconds + addSecond;
-    // ctrl.duration.value = Duration(seconds: ctrl.seconds.value);
   }
 
+  ///Toast Message
   void showToast() {
     Fluttertoast.showToast(
         msg: 'Add task name',
-        // Message
         toastLength: Toast.LENGTH_SHORT,
-        // toast length
         gravity: ToastGravity.TOP,
-        // position// duaration
-        backgroundColor: Colors.red,
-        // background color
+        backgroundColor: Colors.black,
         textColor: Colors.white // text color
         );
   }
 
+  /// Alter Dialog Box
   Future<void> createAlertDialog(BuildContext context) async {
     TextEditingController customController = TextEditingController();
     return await showDialog(
@@ -107,8 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    ctrl.colorList.value.add(Colors.red);
-    ctrl.colorList.value.add(Colors.green);
+    ctrl.colorList.value.add(Colors.pinkAccent);
+    ctrl.colorList.value.add(Colors.teal);
     ctrl.colorList.value.add(Colors.orange);
     ctrl.colorList.value.add(Colors.yellow);
     ctrl.colorList.value.add(Colors.lime);
@@ -125,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (ctrl) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Task List'),
+            title: const Text('Task List'),
           ),
           body: SafeArea(
               child: (ctrl.taskList.isEmpty)
@@ -149,7 +142,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         final seconds = twoDigits(ctrl
                             .taskList[index].duration.inSeconds
                             .remainder(60));
-                        // ignore: unrelated_type_equality_checks
 
                         return Padding(
                           padding: EdgeInsets.all(AppDimen.unitHeight * 5),
@@ -174,14 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        // ignore: invalid_use_of_protected_member
                                         ctrl.taskList[index].name,
                                         style: TextStyle(
                                             fontSize: AppDimen.unitHeight * 15),
                                       ),
-                                      // ignore: unrelated_type_equality_checks
-
-                                      // ignore: unnecessary_null_comparison
                                       ctrl.taskList[index].timer == null
                                           ? Text(
                                               "Start time",
@@ -204,6 +192,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         );
                       })),
+
+          ///Floating Action Button
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               print("Clicked");
@@ -217,9 +207,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  ///Play,Pause,Delete Icons
   Widget _buildIcon(index) {
-    // final running = ctrl.totalTask(index);
-    final isCompleted = ctrl.taskList[index].duration.inSeconds == 0;
     return Row(children: [
       ctrl.taskList[index].isRunning
           ? InkWell(
@@ -262,8 +251,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ctrl.taskList[index].timer!.cancel();
                 ctrl.taskList.removeAt(index);
               }
-
-              //  ctrl.taskList[index].duration = Duration.zero;
               ctrl.update();
               setState(() {});
             },
@@ -273,129 +260,3 @@ class _MyHomePageState extends State<MyHomePage> {
     ]);
   }
 }
-
-// ignore: must_be_immutable
-// class MyHomePage extends StatefulWidget {
-//   MyHomePage({Key? key}) : super(key: key);
-//
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-//
-// class _MyHomePageState extends State<MyHomePage> {
-//   final MyHomePageController ctrl = Get.put(MyHomePageController());
-//
-//   Timer? timer;
-//   Duration duration = const Duration();
-//
-//   // ignore: non_constant_identifier_names
-//
-//   Future<String> createAlertDialog(BuildContext context) async {
-//     TextEditingController customController = TextEditingController();
-//     return await showDialog(
-//         context: context,
-//         builder: (context) {
-//           return AlertDialog(
-//             title: const Text("Name of task"),
-//             content: TextField(
-//               onChanged: (value) {
-//                 value = customController.text;
-//               },
-//               controller: customController,
-//             ),
-//             actions: <Widget>[
-//               MaterialButton(
-//                   elevation: 5.0,
-//                   child: const Text("OK"),
-//                   onPressed: () {
-//                     Navigator.of(context).pop(customController.text.toString());
-//                     ctrl.task.add(customController.text);
-//                   })
-//             ],
-//           );
-//         });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     String twoDigits(int n) => n.toString().padLeft(2, "0");
-//     ctrl.hours.value = twoDigits(ctrl.duration.value.inHours);
-//     ctrl.minutes.value = twoDigits(ctrl.duration.value.inMinutes.remainder(60));
-//     ctrl.second.value = twoDigits(ctrl.duration.value.inSeconds.remainder(60));
-//
-//     return GetX<MyHomePageController>(
-//       builder: (ctrl) {
-//         return Scaffold(
-//           body: SafeArea(
-//               child: ListView.builder(
-//                   physics: const BouncingScrollPhysics(),
-//                   itemCount: ctrl.task.length,
-//                   itemBuilder: (BuildContext context, int index) {
-//                     return Padding(
-//                       padding: EdgeInsets.all(AppDimen.unitHeight * 5),
-//                       child: Container(
-//                         height: AppDimen.screenHeight * 0.1,
-//                         width: AppDimen.unitWidth,
-//                         decoration: const BoxDecoration(
-//                             color: Colors.grey,
-//                             borderRadius: BorderRadius.all(Radius.circular(8))),
-//                         child: Padding(
-//                           padding: EdgeInsets.only(
-//                               left: AppDimen.unitWidth * 20,
-//                               right: AppDimen.unitWidth * 20),
-//                           child: Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                             children: [
-//                               Column(
-//                                 crossAxisAlignment: CrossAxisAlignment.start,
-//                                 mainAxisAlignment: MainAxisAlignment.center,
-//                                 children: [
-//                                   Text(
-//                                     // ignore: invalid_use_of_protected_member
-//                                     ctrl.task[index],
-//                                     style: TextStyle(
-//                                         fontSize: AppDimen.unitHeight * 15),
-//                                   ),
-//                                   Text(
-//                                     "${ctrl.hours.value} : ${ctrl.minutes.value} : ${ctrl.second.value}",
-//                                     style: TextStyle(
-//                                         fontSize: AppDimen.unitHeight * 10),
-//                                   )
-//                                 ],
-//                               ),
-//                               InkWell(
-//                                 onTap: () {
-//                                   ctrl.StartTimer();
-//                                 },
-//                                 child: Icon(
-//                                   Icons.play_arrow,
-//                                   size: AppDimen.unitHeight * 30,
-//                                   color: Colors.green,
-//                                 ),
-//                               )
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     );
-//                   })),
-//           floatingActionButton: FloatingActionButton(
-//             onPressed: () {
-//               print("Clicked");
-//               createAlertDialog(context);
-//             },
-//             backgroundColor: Colors.green,
-//             child: const Icon(Icons.add),
-//           ),
-//         );
-//       },
-//     );
-//   }
-// }
-// InkWell(
-// onTap: () {
-// StartTimer(index);
-// ctrl.totalTask(index);
-// ctrl.update();
-// },
-// child: Icon(Icons.play_arrow, size: AppDimen.unitHeight * 20)),
